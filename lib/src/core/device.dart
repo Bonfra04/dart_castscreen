@@ -79,7 +79,7 @@ final class Device {
 
   /// The factory method create
   factory Device.create(Client client, XmlDocument xml) {
-    return Device._(client, DeviceSpec.fromXml(xml));
+    return Device._(client, DeviceSpec.fromXml(xml, Uri.parse(client.LOCATION).origin));
   }
 
   late Map<String, Service> _servicesMap;
@@ -202,7 +202,7 @@ final class DeviceSpec {
       this.iconSpecs);
 
   /// The factory method fromXml
-  factory DeviceSpec.fromXml(XmlDocument xml) {
+  factory DeviceSpec.fromXml(XmlDocument xml, String location) {
     final deviceType = xml.xpathEvaluate(_xpath('deviceType')).string;
     final presentationURL = xml.xpathEvaluate(_xpath('presentationURL')).string;
     final friendlyName = xml.xpathEvaluate(_xpath('friendlyName')).string;
@@ -231,8 +231,8 @@ final class DeviceSpec {
         UPC,
         UDN,
         uuid,
-        URLBase,
-        List.generate(length, (index) => ServiceSpec.fromXml(xml, index + 1)),
+        URLBase.isNotEmpty ? URLBase : location,
+        List.generate(length, (index) => ServiceSpec.fromXml(xml, index + 1, location)),
         List.generate(iconLength, (index) => IconSpec.fromXml(xml, index + 1)));
   }
 

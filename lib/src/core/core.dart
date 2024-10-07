@@ -59,7 +59,7 @@ abstract final class CastScreen {
     _clients.clear();
     _devices.clear();
     await _init(ipv4, ipv6, port, fetchDevice, onError);
-    _search(ST);
+    _search(ST, port);
     await Future.delayed(timeout, () => {});
     _stop();
   }
@@ -211,10 +211,10 @@ abstract final class CastScreen {
     }
   }
 
-  static void _search(String ST) {
+  static void _search(String ST, int port) {
     final buf = StringBuffer();
     buf.write('M-SEARCH * HTTP/1.1\r\n');
-    buf.write('HOST: 239.255.255.250:1900\r\n');
+    buf.write('HOST: 239.255.255.250:$port\r\n');
     buf.write('MAN: "ssdp:discover"\r\n');
     buf.write('MX: 1\r\n');
     buf.write('ST: $ST\r\n');

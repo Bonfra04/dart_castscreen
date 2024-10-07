@@ -142,8 +142,10 @@ final class ServiceSpec {
   );
 
   /// The factory method fromXml
-  factory ServiceSpec.fromXml(XmlDocument xml, int index) {
-    final URLBase = xml.xpathEvaluate('/root/URLBase/text()').string;
+  factory ServiceSpec.fromXml(XmlDocument xml, int index, String location) {
+    final URLBase = xml.xpathEvaluate('/root/URLBase/text()').string.isNotEmpty
+        ? xml.xpathEvaluate('/root/URLBase/text()').string
+        : location;
     final serviceType = xml.xpathEvaluate(_xpath(index, 'serviceType')).string;
     final serviceId = xml.xpathEvaluate(_xpath(index, 'serviceId')).string;
     final controlURL = xml.xpathEvaluate(_xpath(index, 'controlURL')).string;

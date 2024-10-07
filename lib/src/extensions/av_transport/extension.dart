@@ -10,8 +10,12 @@ part 'play.dart';
 part 'previous.dart';
 part 'set_av_transport_uri.dart';
 part 'stop.dart';
+part 'media_info.dart';
+part 'position_info.dart';
+part 'transport_info.dart';
+part 'seek.dart';
 
-const _defaultInstanceID = '1';
+const _defaultInstanceID = '0';
 const _defaultSpeed = '1';
 
 /// The action extension to implements AVTransport SCPD Service
@@ -57,5 +61,37 @@ extension AVTransportActionsExtension on Device {
         input,
         StopInput.toMap,
         StopOutput.fromMap,
+      );
+
+  Future<MediaInfoOutput> getMediaInfo(MediaInfoInput input) =>
+      avTransportService!.invoke(
+        'GetMediaInfo',
+        input,
+        MediaInfoInput.toMap,
+        MediaInfoOutput.fromMap,
+      );
+
+  Future<PositionInfoOutput> getPositionInfo(PositionInfoInput input) =>
+      avTransportService!.invoke(
+          'GetPositionInfo',
+          input,
+          PositionInfoInput.toMap,
+          PositionInfoOutput.fromMap,
+      );
+
+  Future<TransportInfoOutput> getTransportInfo(TransportInfoInput input) =>
+      avTransportService!.invoke(
+          'GetTransportInfo',
+          input,
+          TransportInfoInput.toMap,
+          TransportInfoOutput.fromMap,
+      );
+
+  Future<SeekOutput> seek(SeekInput input) =>
+      avTransportService!.invoke(
+          'Seek',
+          input,
+          SeekInput.toMap,
+          SeekOutput.fromMap,
       );
 }
